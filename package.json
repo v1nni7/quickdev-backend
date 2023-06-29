@@ -1,0 +1,26 @@
+{
+  "name": "quickdev-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r tsconfig-paths/register src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/v1nni7/quickdev-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/v1nni7/quickdev-backend/issues"
+  },
+  "homepage": "https://github.com/v1nni7/quickdev-backend#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.6"
+  }
+}
