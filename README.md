@@ -9,7 +9,7 @@ Backend desenvolvido para uma aplicação de rede social. A API foi construida u
 
 <details>
   O ExpressJs é um framework web rápido e minimalista para o Node.js. Ele é amplamente utilizado na construção de aplicativos web e fornece uma abordagem simplificada para lidar com rotas, middleware e solicitações HTTP. O ExpressJs foi escolhido para este projeto devido à sua simplicidade, desempenho e grande quantidade de recursos disponíveis.
-  <summary>ExpressJs<summary>
+  <summary>ExpressJs</summary>
 </details>
 
 <details>
@@ -34,15 +34,41 @@ Essas tecnologias foram escolhidas para o backend do QuickDev por suas caracter�
 
 # ⚙ Executando o projeto
 
-1. Clone o repositório
-2. Instale todas as depências
+1. Clone o repositório para o seu ambiente de desenvolvimento.
+
+```bash
+git clone https://github.com/v1nni7/quickdev-backend.git
+```
+
+2. Navegue até o diretório clonado do projeto
+```
+cd quickdev-backend
+
+# Caso tenha mudado o nome do diretório
+cd nome-do-diretorio
+```
+
+3. Instale todas as depências
 
 ```bash
 npm i 
 ```
 
-3. Crie e configure o arquivo `.env.development` utilizando as variáveis de ambiente o arquivo `.env.example` 
+4. Crie e configure o arquivo `.env.development`, utilizando as variáveis de ambiente definidas no arquivo `.env.example`.
 
+5. Execute as migrations do banco
+
+```bash
+npm run migrate:dev
+```
+
+6. Execute o servidor
+
+```
+npm run dev
+```
+
+Após executar essas etapas, o projeto será iniciado e estará disponível localmente no endereço fornecido no **terminal** pelo servidor de desenvolvimento. Certifique-se de que todas as etapas foram concluídas com êxito antes de começar a usar a aplicação.
 
 
 
