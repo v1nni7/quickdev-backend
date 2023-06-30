@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=TEST jest --passWithNoTests --runInBand",
+    "test": "npm run test:load-env jest --passWithNoTests --runInBand",
     "test:coverage": "jest --coverage",
     "dev": "cross-env NODE_ENV=development nodemon -r tsconfig-paths/register src/server.ts",
     "migrate:dev": "npm run dev:load-env prisma migrate dev",
