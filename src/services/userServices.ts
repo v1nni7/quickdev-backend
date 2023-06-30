@@ -9,7 +9,7 @@ async function createUser({ email, name, password }: CreateUserParams) {
 
   const hashedPassword = hashSync(password, 10)
 
-  userRepository.create({
+  await userRepository.create({
     name,
     email,
     password: hashedPassword,
