@@ -47,4 +47,10 @@ async function validatePostExistsOrFail(postId: string) {
   return post
 }
 
-export default { createPost, getPosts, updatePost, deletePost }
+export default {
+  createPost,
+  getPosts,
+  updatePost,
+  deletePost,
+  validatePostExistsOrFail,
+}
