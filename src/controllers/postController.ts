@@ -33,4 +33,25 @@ async function getPosts(req: AuthRequest, res: Response) {
   }
 }
 
-export default { createPost, getPosts }
+async function updatePost(req: AuthRequest, res: Response) {
+  try {
+    const { userId } = req
+    const { postId } = req.params
+    const { title, description } = req.body
+
+    const updatedPost = await postServices.updatePost(
+      { title, description, userId },
+      postId,
+    )
+
+    res.status(200).send(updatedPost)
+  } catch (error) {
+    if (error.message) {
+      res.status(error.statusCode).send(error.message)
+    }
+
+    res.sendStatus(500)
+  }
+}
+
+export default { createPost, getPosts, updatePost }

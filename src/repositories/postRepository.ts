@@ -1,5 +1,5 @@
 import { prisma } from '@/config/database'
-import { CreatePostParams } from '@/interfaces/postInterfaces'
+import { CreatePostParams, UpdatePostParams } from '@/interfaces/postInterfaces'
 
 function getPosts() {
   return prisma.post.findMany()
@@ -11,4 +11,17 @@ function createPost(data: CreatePostParams) {
   })
 }
 
-export default { getPosts, createPost }
+function updatePost(data: UpdatePostParams, id: string) {
+  return prisma.post.update({
+    data,
+    where: { id },
+  })
+}
+
+function findPostById(id: string) {
+  return prisma.post.findUnique({
+    where: { id },
+  })
+}
+
+export default { getPosts, createPost, updatePost, findPostById }
