@@ -9,14 +9,15 @@ commentRouter
   .all('*', validateToken)
   .get('/:postId', commentController.getComments)
   .post(
-    '/create/:postId',
+    '/:postId',
     validateSchema(createCommentSchema),
     commentController.createComment,
   )
   .put(
-    '/update/:commentId',
+    '/:commentId',
     validateSchema(createCommentSchema),
     commentController.updateComment,
   )
+  .delete('/:commentId', commentController.deleteComment)
 
 export default commentRouter

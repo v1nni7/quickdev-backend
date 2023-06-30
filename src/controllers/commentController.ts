@@ -58,4 +58,21 @@ async function updateComment(req: AuthRequest, res: Response) {
   }
 }
 
-export default { createComment, getComments, updateComment }
+async function deleteComment(req: AuthRequest, res: Response) {
+  try {
+    const { userId } = req
+    const { commentId } = req.params
+
+    await commentServices.deleteComment(commentId, userId)
+
+    res.sendStatus(204)
+  } catch (error) {
+    if (error.message) {
+      return res.status(error.statusCode).send(error.message)
+    }
+
+    res.sendStatus(500)
+  }
+}
+
+export default { createComment, getComments, updateComment, deleteComment }

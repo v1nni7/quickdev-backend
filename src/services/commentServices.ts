@@ -4,8 +4,8 @@ import {
   UpdateCommentParams,
 } from '@/interfaces/commentInterface'
 import { notFoundError } from '@/errors/notFoundError'
-import postServices from './postServices'
 import { unauthorizedError } from '@/errors/unauthorizedError'
+import postServices from './postServices'
 
 async function createComment(data: CreateCommentParams) {
   await postServices.validatePostExistsOrFail(data.postId)
@@ -31,6 +31,29 @@ async function updateComment(data: UpdateCommentParams, commentId: string) {
   return updatedComment
 }
 
+async function deleteComment(commentId: string, userId: string) {
+  const comment = await validateCommentExistsOrFail(commentId)
+
+  validateUserIsPostOwnerOrCommentOwner(
+    comment.Post.userId,
+    comment.userId,
+    userId,
+  )
+
+  console.log('O comentário será deletado!')
+  // await commentRepository.deleteComment(commentId)
+}
+
+function validateUserIsPostOwnerOrCommentOwner(
+  postOwnerId: string,
+  commentOwnerId: string,
+  userId: string,
+) {
+  if (postOwnerId !== userId && commentOwnerId !== userId) {
+    throw unauthorizedError('You are not the owner of this post or comment')
+  }
+}
+
 function validateUserIsCommentOwner(commentUserId: string, userId: string) {
   if (commentUserId !== userId) {
     throw unauthorizedError('You are not the owner of this comment')
@@ -47,4 +70,4 @@ async function validateCommentExistsOrFail(commentId: string) {
   return comment
 }
 
-export default { createComment, getComments, updateComment }
+export default { createComment, getComments, updateComment, deleteComment }

@@ -25,6 +25,9 @@ function findCommentsByPostId(postId: string) {
 function findCommentById(id: string) {
   return prisma.comment.findUnique({
     where: { id },
+    include: {
+      Post: true,
+    },
   })
 }
 
@@ -35,10 +38,17 @@ function updateComment(data: UpdateCommentParams, id: string) {
   })
 }
 
+function deleteComment(id: string) {
+  return prisma.comment.delete({
+    where: { id },
+  })
+}
+
 export default {
   create,
   getComments,
   findCommentsByPostId,
   findCommentById,
   updateComment,
+  deleteComment,
 }
