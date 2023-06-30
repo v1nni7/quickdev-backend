@@ -4,7 +4,7 @@ import { hashSync, compareSync } from 'bcrypt'
 import { userRepository } from '@/repositories'
 import { conflictError } from '@/errors/conflictError'
 import { CreateUserParams, SignInParams } from '@/interfaces/userInterfaces'
-import { notFoundError } from '@/errors/notFoundError'
+import { unauthorizedError } from '@/errors/unauthorizedError'
 
 async function createUser({ email, name, password }: CreateUserParams) {
   await validateUniqueEmailOrFail(email)
@@ -37,7 +37,7 @@ async function validatePasswordOrFail(
   const passwordMatch = compareSync(password, hashedPassword)
 
   if (!passwordMatch) {
-    throw notFoundError('Invalid email or password')
+    throw unauthorizedError('Invalid email or password')
   }
 }
 
@@ -45,7 +45,7 @@ async function getUserByEmailOrFail(email: string) {
   const user = await userRepository.findByEmail(email)
 
   if (!user) {
-    throw notFoundError('Invalid email or password')
+    throw unauthorizedError('Invalid email or password')
   }
 
   return user
