@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon -r tsconfig-paths/register src/server.ts",
     "migrate:dev": "npm run dev:load-env prisma migrate dev",
+    "studio:dev": "npm run dev:load-env prisma studio",
     "dev:load-env": "dotenv -e .env.development"
   },
   "repository": {
