@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import userController from '@/controllers/userController'
+import { userController } from '@/controllers'
 import validateSchema from '@/middlewares/validateSchemaMiddleware'
 import { signUpSchema, signInSchema } from '@/schemas/userSchemas'
 

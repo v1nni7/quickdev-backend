@@ -1,8 +1,5 @@
-import { Prisma } from '@prisma/client'
+import { User } from '@prisma/client'
 
-export type CreateUserParams = Pick<
-  Prisma.UserCreateInput,
-  'name' | 'email' | 'password'
->
+export type CreateUserParams = Pick<User, 'name' | 'email' | 'password'>
 
-export type SignInParams = Pick<Prisma.UserCreateInput, 'email' | 'password'>
+export type SignInParams = Pick<User, 'email' | 'password'>

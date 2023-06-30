@@ -1,4 +1,4 @@
-import userServices from '@/services/userServices'
+import { userServices } from '@/services'
 import { Request, Response } from 'express'
 
 async function signUp(req: Request, res: Response) {

@@ -1,3 +1,4 @@
 import userRepository from './userRepository'
+import postRepository from './postRepository'
 
-export { userRepository }
+export { userRepository, postRepository }
