@@ -10,7 +10,7 @@ async function signUp(req: Request, res: Response) {
     res.sendStatus(201)
   } catch (error) {
     if (error.message) {
-      res.status(error.statusCode).send(error.message)
+      return res.status(error.statusCode).send(error.message)
     }
 
     res.sendStatus(500)
@@ -26,7 +26,7 @@ async function signIn(req: Request, res: Response) {
     res.send(token)
   } catch (error) {
     if (error.message) {
-      res.status(error.statusCode).send(error.message)
+      return res.status(error.statusCode).send(error.message)
     }
 
     res.sendStatus(500)
