@@ -40,8 +40,7 @@ async function deleteComment(commentId: string, userId: string) {
     userId,
   )
 
-  console.log('O comentário será deletado!')
-  // await commentRepository.deleteComment(commentId)
+  await commentRepository.deleteComment(commentId)
 }
 
 function validateUserIsPostOwnerOrCommentOwner(
