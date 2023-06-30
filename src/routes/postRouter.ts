@@ -15,5 +15,6 @@ postRouter
     validateSchema(updatePostSchema),
     postController.updatePost,
   )
+  .delete('/delete/:postId', postController.deletePost)
 
 export default postRouter

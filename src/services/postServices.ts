@@ -23,6 +23,14 @@ async function updatePost(data: UpdatePostParams, postId: string) {
   return updatedPost
 }
 
+async function deletePost(postId: string, userId: string) {
+  const post = await validatePostExistsOrFail(postId)
+
+  await validateUserIsPostOwner(post.userId, userId)
+
+  await postRepository.deletePost(postId)
+}
+
 async function validateUserIsPostOwner(postUserId: string, userId: string) {
   if (postUserId !== userId) {
     throw unauthorizedError('You are not the owner of this post')
@@ -39,4 +47,4 @@ async function validatePostExistsOrFail(postId: string) {
   return post
 }
 
-export default { createPost, getPosts, updatePost }
+export default { createPost, getPosts, updatePost, deletePost }

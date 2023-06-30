@@ -24,4 +24,10 @@ function findPostById(id: string) {
   })
 }
 
-export default { getPosts, createPost, updatePost, findPostById }
+function deletePost(id: string) {
+  return prisma.post.delete({
+    where: { id },
+  })
+}
+
+export default { getPosts, createPost, updatePost, findPostById, deletePost }
