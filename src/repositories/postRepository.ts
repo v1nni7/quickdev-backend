@@ -2,7 +2,11 @@ import { prisma } from '@/config/database'
 import { CreatePostParams, UpdatePostParams } from '@/interfaces/postInterfaces'
 
 function getPosts() {
-  return prisma.post.findMany()
+  return prisma.post.findMany({
+    include: {
+      Comment: true,
+    },
+  })
 }
 
 function createPost(data: CreatePostParams) {
