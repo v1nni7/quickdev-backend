@@ -13,5 +13,10 @@ commentRouter
     validateSchema(createCommentSchema),
     commentController.createComment,
   )
+  .put(
+    '/update/:commentId',
+    validateSchema(createCommentSchema),
+    commentController.updateComment,
+  )
 
 export default commentRouter

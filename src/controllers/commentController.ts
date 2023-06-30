@@ -37,4 +37,25 @@ async function getComments(req: AuthRequest, res: Response) {
   }
 }
 
-export default { createComment, getComments }
+async function updateComment(req: AuthRequest, res: Response) {
+  try {
+    const { userId } = req
+    const { commentId } = req.params
+    const { description } = req.body
+
+    const updatedComment = await commentServices.updateComment(
+      { description, userId },
+      commentId,
+    )
+
+    res.status(200).send(updatedComment)
+  } catch (error) {
+    if (error.message) {
+      return res.status(error.statusCode).send(error.message)
+    }
+
+    res.sendStatus(500)
+  }
+}
+
+export default { createComment, getComments, updateComment }

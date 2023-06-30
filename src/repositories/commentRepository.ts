@@ -1,5 +1,8 @@
 import { prisma } from '@/config/database'
-import { CreateCommentParams } from '@/interfaces/commentInterface'
+import {
+  CreateCommentParams,
+  UpdateCommentParams,
+} from '@/interfaces/commentInterface'
 
 function create(data: CreateCommentParams) {
   return prisma.comment.create({
@@ -19,4 +22,23 @@ function findCommentsByPostId(postId: string) {
   })
 }
 
-export default { create, getComments, findCommentsByPostId }
+function findCommentById(id: string) {
+  return prisma.comment.findUnique({
+    where: { id },
+  })
+}
+
+function updateComment(data: UpdateCommentParams, id: string) {
+  return prisma.comment.update({
+    data,
+    where: { id },
+  })
+}
+
+export default {
+  create,
+  getComments,
+  findCommentsByPostId,
+  findCommentById,
+  updateComment,
+}
