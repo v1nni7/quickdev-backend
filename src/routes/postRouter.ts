@@ -9,12 +9,8 @@ const postRouter = Router()
 postRouter
   .all('*', validateToken)
   .get('/', postController.getPosts)
-  .post('/create', validateSchema(createPostSchema), postController.createPost)
-  .put(
-    '/update/:postId',
-    validateSchema(updatePostSchema),
-    postController.updatePost,
-  )
-  .delete('/delete/:postId', postController.deletePost)
+  .post('/', validateSchema(createPostSchema), postController.createPost)
+  .put('/:postId', validateSchema(updatePostSchema), postController.updatePost)
+  .delete('/:postId', postController.deletePost)
 
 export default postRouter
