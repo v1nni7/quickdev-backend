@@ -8,4 +8,10 @@ async function createComment(data: CreateCommentParams) {
   await commentRepository.create(data)
 }
 
-export default { createComment }
+async function getComments(postId?: string) {
+  await postServices.validatePostExistsOrFail(postId)
+
+  return await commentRepository.findCommentsByPostId(postId)
+}
+
+export default { createComment, getComments }

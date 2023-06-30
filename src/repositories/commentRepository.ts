@@ -7,4 +7,16 @@ function create(data: CreateCommentParams) {
   })
 }
 
-export default { create }
+function getComments() {
+  return prisma.comment.findMany()
+}
+
+function findCommentsByPostId(postId: string) {
+  return prisma.comment.findMany({
+    where: {
+      postId,
+    },
+  })
+}
+
+export default { create, getComments, findCommentsByPostId }

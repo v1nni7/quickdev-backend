@@ -7,6 +7,7 @@ const commentRouter = Router()
 
 commentRouter
   .all('*', validateToken)
+  .get('/:postId', commentController.getComments)
   .post(
     '/create/:postId',
     validateSchema(createCommentSchema),
