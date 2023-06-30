@@ -5,4 +5,8 @@ async function createPost(data: CreatePostParams) {
   await postRepository.createPost(data)
 }
 
-export default { createPost }
+async function getPosts() {
+  return await postRepository.getPosts()
+}
+
+export default { createPost, getPosts }

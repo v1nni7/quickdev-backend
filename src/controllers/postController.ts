@@ -19,4 +19,18 @@ async function createPost(req: AuthRequest, res: Response) {
   }
 }
 
-export default { createPost }
+async function getPosts(req: AuthRequest, res: Response) {
+  try {
+    const posts = await postServices.getPosts()
+
+    res.status(200).send(posts)
+  } catch (error) {
+    if (error.message) {
+      res.status(error.statusCode).send(error.message)
+    }
+
+    res.sendStatus(500)
+  }
+}
+
+export default { createPost, getPosts }
