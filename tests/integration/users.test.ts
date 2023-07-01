@@ -6,7 +6,7 @@ import {
   validateToken,
   generateValidUserBody,
 } from '../helpers'
-import { createUser } from '../factories/usersFactory'
+import { createUser, generateValidToken } from '../factories/usersFactory'
 
 beforeAll(async () => {
   cleanDatabase()
@@ -175,6 +175,69 @@ describe('POST /users/sign-in', () => {
         .send({ email, password: incorrectPassword })
 
       expect(response.status).toBe(401)
+    })
+  })
+})
+
+describe('GET /users/:userId', () => {
+  describe('when token is invalid', () => {
+    it('should respond with status 401 when token is not given', async () => {
+      const user = await createUser()
+
+      const response = await server.get(`/users/${user.id}`)
+
+      expect(response.status).toBe(401)
+    })
+
+    it('should respond with status 401 when token is expired', async () => {
+      const user = await createUser()
+      const token = await generateValidToken('-1d', user)
+
+      const response = await server.get(`/users/${user.id}`).set({
+        Authorization: `Bearer ${token}`,
+      })
+
+      expect(response.status).toBe(401)
+    })
+
+    it('should respond with status 401 when token is invalid', async () => {
+      const user = await createUser()
+      const token = faker.lorem.word()
+
+      const response = await server.get(`/users/${user.id}`).set({
+        Authorization: `Bearer ${token}`,
+      })
+
+      expect(response.status).toBe(401)
+    })
+  })
+
+  describe('when token is valid', () => {
+    it('should respond with status 200 ans return user data', async () => {
+      const user = await createUser()
+      const token = await generateValidToken(undefined, user)
+
+      const response = await server.get(`/users/${user.id}`).set({
+        Authorization: `Bearer ${token}`,
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.body).toMatchObject({
+        id: expect.any(String),
+        name: expect.any(String),
+        email: expect.any(String),
+      })
+    })
+
+    it('should respond with status 404 when user does not exist', async () => {
+      const user = await createUser()
+      const token = await generateValidToken(undefined, user)
+
+      const response = await server.get(`/users/${faker.string.uuid()}`).set({
+        Authorization: `Bearer ${token}`,
+      })
+
+      expect(response.status).toBe(404)
     })
   })
 })
