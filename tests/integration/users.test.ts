@@ -241,3 +241,112 @@ describe('GET /users/:userId', () => {
     })
   })
 })
+
+describe('PUT /users/:userId', () => {
+  describe('when token is invalid', () => {
+    it('should respond with status 401 when token is not given', async () => {
+      const user = await createUser()
+
+      const response = await server.put(`/users/${user.id}`)
+
+      expect(response.status).toBe(401)
+    })
+
+    it("should respond with status 401 when token doesn't have Bearer prefix", async () => {
+      const user = await createUser()
+      const token = await generateValidToken(undefined, user)
+
+      const response = await server.put(`/users/${user.id}`).set({
+        Authorization: token,
+      })
+
+      expect(response.status).toBe(401)
+    })
+  })
+
+  describe('when token is valid', () => {
+    it('should respond with status 200 and return updated user data', async () => {
+      const user = await createUser()
+      const token = await generateValidToken(undefined, user)
+
+      const body = {
+        name: faker.person.firstName(),
+      }
+
+      const response = await server
+        .put(`/users/${user.id}`)
+        .send(body)
+        .set({ Authorization: `Bearer ${token}` })
+
+      const expectedResponse = {
+        ...body,
+        ...user,
+      }
+
+      expect(response.status).toBe(200)
+      expect(response.body).toMatchObject(expectedResponse)
+    })
+
+    it('should respond with status 401 when token is expired', async () => {
+      const user = await createUser()
+      const token = await generateValidToken('-1d', user)
+
+      const body = {
+        name: faker.person.firstName(),
+      }
+
+      const response = await server
+        .put(`/users/${user.id}`)
+        .send(body)
+        .set({ Authorization: `Bearer ${token}` })
+
+      expect(response.status).toBe(401)
+    })
+
+    it("should respond with status 404 when user doesn't exist", async () => {
+      const user = await createUser()
+      const token = await generateValidToken(undefined, user)
+
+      const body = {
+        name: faker.person.firstName(),
+      }
+
+      const response = await server
+        .put(`/users/${faker.string.uuid()}`)
+        .send(body)
+        .set({ Authorization: `Bearer ${token}` })
+
+      const notExpectedResponse = {
+        ...body,
+        ...user,
+      }
+
+      expect(response.status).toBe(404)
+      expect(response.body).not.toMatchObject(notExpectedResponse)
+    })
+
+    it("should respond with status 403 when user doesn't have permission", async () => {
+      const user = await createUser()
+
+      const newUser = await createUser()
+      const token = await generateValidToken(undefined, newUser)
+
+      const body = {
+        name: faker.person.firstName(),
+      }
+
+      const response = await server
+        .put(`/users/${user.id}`)
+        .send(body)
+        .set({ Authorization: `Bearer ${token}` })
+
+      const notExpectedResponse = {
+        ...body,
+        ...user,
+      }
+
+      expect(response.status).toBe(403)
+      expect(response.body).not.toMatchObject(notExpectedResponse)
+    })
+  })
+})
