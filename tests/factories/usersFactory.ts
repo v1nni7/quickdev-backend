@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 import { hashSync } from 'bcrypt'
 import { faker } from '@faker-js/faker'
 import { User } from '@prisma/client'
@@ -17,4 +18,21 @@ export async function createUser(params: Partial<User> = {}) {
       password: hashedPassword,
     },
   })
+}
+
+export async function generateValidToken(
+  expiresIn = '14 days',
+  userId?: string,
+) {
+  const user = await createUser()
+
+  const token = jwt.sign(
+    { id: userId || user.id },
+    process.env.JWT_SECRET as string,
+    {
+      expiresIn,
+    },
+  )
+
+  return token
 }

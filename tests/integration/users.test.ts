@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker'
 
 import {
-  cleanDatabase,
   server,
-  generateValidUserBody,
+  cleanDatabase,
   validateToken,
+  generateValidUserBody,
 } from '../helpers'
 import { createUser } from '../factories/usersFactory'
 

@@ -1,7 +1,7 @@
 import { postRepository } from '@/repositories'
-import { CreatePostParams, UpdatePostParams } from '@/interfaces/postInterfaces'
 import { notFoundError } from '@/errors/notFoundError'
 import { forbiddenError } from '@/errors/forbiddenError'
+import { CreatePostParams, UpdatePostParams } from '@/interfaces/postInterfaces'
 
 async function createPost(data: CreatePostParams) {
   await postRepository.createPost(data)
