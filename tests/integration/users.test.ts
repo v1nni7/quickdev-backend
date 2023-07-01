@@ -353,12 +353,7 @@ describe('DELETE /users', () => {
         .delete('/users')
         .set({ Authorization: `Bearer ${token}` })
 
-      expect(response.status).toBe(200)
-      expect(response.body).toMatchObject({
-        id: expect.any(String),
-        name: expect.any(String),
-        email: expect.any(String),
-      })
+      expect(response.status).toBe(204)
     })
 
     it('should respond with status 401 when token is expired', async () => {

@@ -38,6 +38,22 @@ async function updateUser(req: AuthRequest, res: Response) {
   }
 }
 
+async function deleteUser(req: AuthRequest, res: Response) {
+  try {
+    const { userId } = req
+
+    await userServices.deleteUser(userId)
+
+    res.sendStatus(204)
+  } catch (error) {
+    if (error.message) {
+      return res.status(error.statusCode).send(error.message)
+    }
+
+    res.sendStatus(500)
+  }
+}
+
 async function signUp(req: Request, res: Response) {
   try {
     const { name, email, password } = req.body
@@ -73,6 +89,7 @@ async function signIn(req: Request, res: Response) {
 export default {
   getUser,
   updateUser,
+  deleteUser,
   signUp,
   signIn,
 }

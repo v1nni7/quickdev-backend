@@ -57,6 +57,12 @@ async function updateUser(
   return updatedUser
 }
 
+async function deleteUser(userId: string) {
+  await validateUserExistsOrFail(userId)
+
+  await userRepository.deleteUser(userId)
+}
+
 async function validateSignIn({ email, password }: SignInParams) {
   const user = await getUserByEmailOrFail(email)
 
@@ -113,6 +119,7 @@ async function validateUniqueEmailOrFail(email: string) {
 export default {
   getUser,
   updateUser,
+  deleteUser,
   createUser,
   validateSignIn,
 }

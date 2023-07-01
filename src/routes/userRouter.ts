@@ -18,6 +18,7 @@ userRouter
     validateSchema(updateUserSchema),
     userController.updateUser,
   )
+  .delete('/', validateToken, userController.deleteUser)
   .post('/sign-up', validateSchema(signUpSchema), userController.signUp)
   .post('/sign-in', validateSchema(signInSchema), userController.signIn)
 

@@ -16,6 +16,14 @@ function updateUser(data: UpdateUserParams, id: string) {
   })
 }
 
+function deleteUser(id: string) {
+  return prisma.user.delete({
+    where: {
+      id,
+    },
+  })
+}
+
 function findByEmail(email: string) {
   return prisma.user.findUnique({
     where: {
@@ -35,6 +43,7 @@ function findById(id: string) {
 export default {
   create,
   updateUser,
+  deleteUser,
   findById,
   findByEmail,
 }
