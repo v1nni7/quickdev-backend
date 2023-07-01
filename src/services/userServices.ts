@@ -23,7 +23,7 @@ async function createUser({ email, name, password }: CreateUserParams) {
 
   const hashedPassword = hashSync(password, 10)
 
-  await userRepository.create({
+  await userRepository.createUser({
     name,
     email,
     password: hashedPassword,

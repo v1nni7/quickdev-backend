@@ -1,22 +1,19 @@
+import { httpResponse } from '@/utils'
 import { commentRepository } from '@/repositories'
+import { CreateCommentParams, UpdateCommentParams } from '@/interfaces'
 
 import postServices from './postServices'
-import { httpResponse } from '@/utils/httpResponse'
-import {
-  CreateCommentParams,
-  UpdateCommentParams,
-} from '@/interfaces/commentInterface'
 
 async function createComment(data: CreateCommentParams) {
   await postServices.validatePostExistsOrFail(data.postId)
 
-  await commentRepository.create(data)
+  await commentRepository.createComment(data)
 }
 
 async function getComments(postId?: string) {
   await postServices.validatePostExistsOrFail(postId)
 
-  return await commentRepository.findCommentsByPostId(postId)
+  return await commentRepository.findByPostId(postId)
 }
 
 async function updateComment(data: UpdateCommentParams, commentId: string) {
@@ -63,7 +60,7 @@ function validateUserIsCommentOwner(commentUserId: string, userId: string) {
 }
 
 async function validateCommentExistsOrFail(commentId: string) {
-  const comment = await commentRepository.findCommentById(commentId)
+  const comment = await commentRepository.findById(commentId)
 
   if (!comment) {
     throw httpResponse('notFound', 'Comment not found')

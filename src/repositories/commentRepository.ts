@@ -1,33 +1,9 @@
 import { prisma } from '@/config/database'
-import {
-  CreateCommentParams,
-  UpdateCommentParams,
-} from '@/interfaces/commentInterface'
+import { CreateCommentParams, UpdateCommentParams } from '@/interfaces'
 
-function create(data: CreateCommentParams) {
+function createComment(data: CreateCommentParams) {
   return prisma.comment.create({
     data,
-  })
-}
-
-function getComments() {
-  return prisma.comment.findMany()
-}
-
-function findCommentsByPostId(postId: string) {
-  return prisma.comment.findMany({
-    where: {
-      postId,
-    },
-  })
-}
-
-function findCommentById(id: string) {
-  return prisma.comment.findUnique({
-    where: { id },
-    include: {
-      Post: true,
-    },
   })
 }
 
@@ -44,11 +20,32 @@ function deleteComment(id: string) {
   })
 }
 
+function findById(id: string) {
+  return prisma.comment.findUnique({
+    where: { id },
+    include: {
+      Post: true,
+    },
+  })
+}
+
+function findByPostId(postId: string) {
+  return prisma.comment.findMany({
+    where: {
+      postId,
+    },
+  })
+}
+
+function getComments() {
+  return prisma.comment.findMany()
+}
+
 export default {
-  create,
-  getComments,
-  findCommentsByPostId,
-  findCommentById,
+  createComment,
   updateComment,
   deleteComment,
+  findById,
+  findByPostId,
+  getComments,
 }

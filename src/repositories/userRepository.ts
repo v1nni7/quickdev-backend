@@ -1,7 +1,7 @@
 import { prisma } from '@/config/database'
 import { CreateUserParams, UpdateUserParams } from '@/interfaces/userInterfaces'
 
-function create(data: CreateUserParams) {
+function createUser(data: CreateUserParams) {
   return prisma.user.create({
     data,
   })
@@ -40,10 +40,4 @@ function findById(id: string) {
   })
 }
 
-export default {
-  create,
-  updateUser,
-  deleteUser,
-  findById,
-  findByEmail,
-}
+export default { createUser, updateUser, deleteUser, findById, findByEmail }
