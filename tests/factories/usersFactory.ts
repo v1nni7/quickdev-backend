@@ -20,14 +20,11 @@ export async function createUser(params: Partial<User> = {}) {
   })
 }
 
-export async function generateValidToken(
-  expiresIn = '14 days',
-  userId?: string,
-) {
-  const user = await createUser()
+export async function generateValidToken(expiresIn = '14 days', user?: User) {
+  const incomingUser = user || (await createUser())
 
   const token = jwt.sign(
-    { id: userId || user.id },
+    { id: incomingUser.id },
     process.env.JWT_SECRET as string,
     {
       expiresIn,

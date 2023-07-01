@@ -4,7 +4,7 @@ import {
   UpdateCommentParams,
 } from '@/interfaces/commentInterface'
 import { notFoundError } from '@/errors/notFoundError'
-import { unauthorizedError } from '@/errors/unauthorizedError'
+import { forbiddenError } from '@/errors/forbiddenError'
 import postServices from './postServices'
 
 async function createComment(data: CreateCommentParams) {
@@ -49,13 +49,13 @@ function validateUserIsPostOwnerOrCommentOwner(
   userId: string,
 ) {
   if (postOwnerId !== userId && commentOwnerId !== userId) {
-    throw unauthorizedError('You are not the owner of this post or comment')
+    throw forbiddenError('You are not the owner of this post or comment')
   }
 }
 
 function validateUserIsCommentOwner(commentUserId: string, userId: string) {
   if (commentUserId !== userId) {
-    throw unauthorizedError('You are not the owner of this comment')
+    throw forbiddenError('You are not the owner of this comment')
   }
 }
 

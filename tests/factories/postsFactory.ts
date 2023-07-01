@@ -1,10 +1,15 @@
-import { prisma } from '@/config/database'
 import { faker } from '@faker-js/faker'
 
-export async function createPost(userId: string) {
+import { prisma } from '@/config/database'
+import { User } from '@prisma/client'
+import { createUser } from './usersFactory'
+
+export async function createPost(user?: User) {
+  const incomingUser = user || (await createUser())
+
   return prisma.post.create({
     data: {
-      userId,
+      userId: incomingUser.id,
       title: faker.lorem.words(6),
       description: faker.lorem.words(12),
     },

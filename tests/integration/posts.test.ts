@@ -169,9 +169,9 @@ describe('PUT /posts/:id', () => {
   describe('when token is valid', () => {
     it('should respond with status 200 and return updated post', async () => {
       const userOwner = await createUser()
-      const post = await createPost(userOwner.id)
+      const post = await createPost(userOwner)
 
-      const token = await generateValidToken(undefined, userOwner.id)
+      const token = await generateValidToken(undefined, userOwner)
 
       const body = {
         title: "I'm not the owner",
@@ -196,11 +196,11 @@ describe('PUT /posts/:id', () => {
     })
 
     it("should respond with status 403 when user doesn't own the post", async () => {
-      const postOwner = await createUser()
-      const post = await createPost(postOwner.id)
+      const userOwner = await createUser()
+      const post = await createPost(userOwner)
 
       const user = await createUser()
-      const token = await generateValidToken(undefined, user.id)
+      const token = await generateValidToken(undefined, user)
 
       const body = {
         title: "I'm not the owner",
@@ -242,9 +242,9 @@ describe('DELETE /posts/:id', () => {
   describe('when token is valid', () => {
     it('should respond with status 204 and delete post', async () => {
       const userOwner = await createUser()
-      const post = await createPost(userOwner.id)
+      const post = await createPost(userOwner)
 
-      const token = await generateValidToken(undefined, userOwner.id)
+      const token = await generateValidToken(undefined, userOwner)
 
       const response = await server.delete(`/posts/${post.id}`).set({
         Authorization: `Bearer ${token}`,
@@ -254,11 +254,11 @@ describe('DELETE /posts/:id', () => {
     })
 
     it("should respond with status 403 when user doesn't own the post", async () => {
-      const postOwner = await createUser()
-      const post = await createPost(postOwner.id)
+      const userOwner = await createUser()
+      const post = await createPost(userOwner)
 
       const user = await createUser()
-      const token = await generateValidToken(undefined, user.id)
+      const token = await generateValidToken(undefined, user)
 
       const response = await server.delete(`/posts/${post.id}`).set({
         Authorization: `Bearer ${token}`,
