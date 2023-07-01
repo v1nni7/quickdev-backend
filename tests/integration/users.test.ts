@@ -332,3 +332,44 @@ describe('PUT /users', () => {
     })
   })
 })
+
+describe('DELETE /users', () => {
+  describe('when token is invalid', () => {
+    it('should respond with status 401 when token is not given', async () => {
+      await createUser()
+
+      const response = await server.delete(`/users`)
+
+      expect(response.status).toBe(401)
+    })
+  })
+
+  describe('when token is valid', () => {
+    it('should respond with status 204 and delete user', async () => {
+      const user = await createUser()
+      const token = await generateValidToken(undefined, user)
+
+      const response = await server
+        .delete('/users')
+        .set({ Authorization: `Bearer ${token}` })
+
+      expect(response.status).toBe(200)
+      expect(response.body).toMatchObject({
+        id: expect.any(String),
+        name: expect.any(String),
+        email: expect.any(String),
+      })
+    })
+
+    it('should respond with status 401 when token is expired', async () => {
+      const user = await createUser()
+      const token = await generateValidToken('-1d', user)
+
+      const response = await server
+        .delete('/users')
+        .set({ Authorization: `Bearer ${token}` })
+
+      expect(response.status).toBe(401)
+    })
+  })
+})
