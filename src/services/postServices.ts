@@ -1,14 +1,9 @@
+import { httpResponse } from '@/utils'
 import { postRepository } from '@/repositories'
-
-import { CreatePostParams, UpdatePostParams } from '@/interfaces/postInterfaces'
-import { httpResponse } from '@/utils/httpResponse'
+import { CreatePostParams, UpdatePostParams } from '@/interfaces'
 
 async function createPost(data: CreatePostParams) {
   await postRepository.createPost(data)
-}
-
-async function getPosts() {
-  return await postRepository.getPosts()
 }
 
 async function updatePost(data: UpdatePostParams, postId: string) {
@@ -16,7 +11,7 @@ async function updatePost(data: UpdatePostParams, postId: string) {
 
   const post = await validatePostExistsOrFail(postId)
 
-  validateUserIsPostOwner(post.userId, userId)
+  validateUserPermissionOrFail(post.userId, userId)
 
   const updatedPost = await postRepository.updatePost(data, postId)
 
@@ -26,12 +21,16 @@ async function updatePost(data: UpdatePostParams, postId: string) {
 async function deletePost(postId: string, userId: string) {
   const post = await validatePostExistsOrFail(postId)
 
-  validateUserIsPostOwner(post.userId, userId)
+  validateUserPermissionOrFail(post.userId, userId)
 
   await postRepository.deletePost(postId)
 }
 
-function validateUserIsPostOwner(postUserId: string, userId: string) {
+async function getPosts() {
+  return await postRepository.getPosts()
+}
+
+function validateUserPermissionOrFail(postUserId: string, userId: string) {
   if (postUserId !== userId) {
     throw httpResponse('forbidden', 'You are not the owner of this post')
   }
@@ -49,8 +48,8 @@ async function validatePostExistsOrFail(postId: string) {
 
 export default {
   createPost,
-  getPosts,
   updatePost,
   deletePost,
+  getPosts,
   validatePostExistsOrFail,
 }

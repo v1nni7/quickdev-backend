@@ -21,7 +21,7 @@ async function updateComment(data: UpdateCommentParams, commentId: string) {
 
   const comment = await validateCommentExistsOrFail(commentId)
 
-  validateUserIsCommentOwner(comment.userId, userId)
+  validateUserToUpdate(comment.userId, userId)
 
   const updatedComment = await commentRepository.updateComment(data, commentId)
 
@@ -31,16 +31,12 @@ async function updateComment(data: UpdateCommentParams, commentId: string) {
 async function deleteComment(commentId: string, userId: string) {
   const comment = await validateCommentExistsOrFail(commentId)
 
-  validateUserIsPostOwnerOrCommentOwner(
-    comment.Post.userId,
-    comment.userId,
-    userId,
-  )
+  validateUserPermissionToDelete(comment.Post.userId, comment.userId, userId)
 
   await commentRepository.deleteComment(commentId)
 }
 
-function validateUserIsPostOwnerOrCommentOwner(
+function validateUserPermissionToDelete(
   postOwnerId: string,
   commentOwnerId: string,
   userId: string,
@@ -53,7 +49,7 @@ function validateUserIsPostOwnerOrCommentOwner(
   }
 }
 
-function validateUserIsCommentOwner(commentUserId: string, userId: string) {
+function validateUserToUpdate(commentUserId: string, userId: string) {
   if (commentUserId !== userId) {
     throw httpResponse('forbidden', 'You are not the owner of this comment')
   }
@@ -69,4 +65,4 @@ async function validateCommentExistsOrFail(commentId: string) {
   return comment
 }
 
-export default { createComment, getComments, updateComment, deleteComment }
+export default { createComment, updateComment, deleteComment, getComments }

@@ -1,22 +1,9 @@
 import jwt from 'jsonwebtoken'
 import { hashSync, compareSync } from 'bcrypt'
 
+import { httpResponse } from '@/utils'
 import { userRepository } from '@/repositories'
-import { httpResponse } from '@/utils/httpResponse'
-
-import {
-  SignInParams,
-  CreateUserParams,
-  UpdateUserParams,
-} from '@/interfaces/userInterfaces'
-
-async function getUser(id: string) {
-  await validateUserExistsOrFail(id)
-
-  const user = await userRepository.findById(id)
-
-  return user
-}
+import { SignInParams, CreateUserParams, UpdateUserParams } from '@/interfaces'
 
 async function createUser({ email, name, password }: CreateUserParams) {
   await validateUniqueEmailOrFail(email)
@@ -30,15 +17,14 @@ async function createUser({ email, name, password }: CreateUserParams) {
   })
 }
 
-async function updateUser(
-  { email, name, password }: UpdateUserParams,
-  userId: string,
-) {
+async function updateUser(data: UpdateUserParams, userId: string) {
+  const { email, password } = data
+
   await validateUserExistsOrFail(userId)
 
   await validateUniqueEmailOrFail(email)
 
-  let hashedPassword
+  let hashedPassword: any
 
   if (password) {
     hashedPassword = hashSync(password, 10)
@@ -46,8 +32,7 @@ async function updateUser(
 
   const updatedUser = await userRepository.updateUser(
     {
-      name,
-      email,
+      ...data,
       password: hashedPassword,
     },
     userId,
@@ -60,6 +45,14 @@ async function deleteUser(userId: string) {
   await validateUserExistsOrFail(userId)
 
   await userRepository.deleteUser(userId)
+}
+
+async function getUser(id: string) {
+  await validateUserExistsOrFail(id)
+
+  const user = await userRepository.findById(id)
+
+  return user
 }
 
 async function validateSignIn({ email, password }: SignInParams) {
@@ -116,9 +109,9 @@ async function validateUniqueEmailOrFail(email: string) {
 }
 
 export default {
-  getUser,
+  createUser,
   updateUser,
   deleteUser,
-  createUser,
+  getUser,
   validateSignIn,
 }
