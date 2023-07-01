@@ -70,5 +70,27 @@ npm run dev
 
 Após executar essas etapas, o projeto será iniciado e estará disponível localmente no endereço fornecido no **terminal** pelo servidor de desenvolvimento. Certifique-se de que todas as etapas foram concluídas com êxito antes de começar a usar a aplicação.
 
+# ⚙ Executando os testes
+
+1. Conclua os passos 1 ao 3 do tutorial `Executando o projeto`
+
+2. Crie e configure o arquivo `.env.test`, utilizando as variáveis de ambiente definidas no arquivo `.env.example`
+
+3. Execute as migrations do banco
+
+```bash
+npm run migrate:test
+```
+
+4. Execute os testes
+
+```
+npm t
+```
+
+
+Feito com ❤️ por **Vinicius Cezar** 👋🏽 [Entre em contato!](https://www.linkedin.com/in/vinicius-silveira-cezar/) 
+
+
 
 
