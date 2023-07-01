@@ -15,7 +15,16 @@ function findByEmail(email: string) {
   })
 }
 
+function findById(id: string) {
+  return prisma.user.findUnique({
+    where: {
+      id,
+    },
+  })
+}
+
 export default {
   create,
+  findById,
   findByEmail,
 }
