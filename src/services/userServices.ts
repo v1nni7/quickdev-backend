@@ -5,7 +5,11 @@ import { userRepository } from '@/repositories'
 import { conflictError } from '@/errors/conflictError'
 import { notFoundError } from '@/errors/notFoundError'
 import { unauthorizedError } from '@/errors/unauthorizedError'
-import { CreateUserParams, SignInParams } from '@/interfaces/userInterfaces'
+import {
+  CreateUserParams,
+  SignInParams,
+  UpdateUserParams,
+} from '@/interfaces/userInterfaces'
 
 async function getUser(id: string) {
   await validateUserExistsOrFail(id)
@@ -25,6 +29,32 @@ async function createUser({ email, name, password }: CreateUserParams) {
     email,
     password: hashedPassword,
   })
+}
+
+async function updateUser(
+  { email, name, password }: UpdateUserParams,
+  userId: string,
+) {
+  await validateUserExistsOrFail(userId)
+
+  await validateUniqueEmailOrFail(email)
+
+  let hashedPassword
+
+  if (password) {
+    hashedPassword = hashSync(password, 10)
+  }
+
+  const updatedUser = await userRepository.updateUser(
+    {
+      name,
+      email,
+      password: hashedPassword,
+    },
+    userId,
+  )
+
+  return updatedUser
 }
 
 async function validateSignIn({ email, password }: SignInParams) {
@@ -66,9 +96,13 @@ async function validateUserExistsOrFail(id: string) {
   if (!user) {
     throw notFoundError('User not found')
   }
+
+  return user
 }
 
 async function validateUniqueEmailOrFail(email: string) {
+  if (!email) return
+
   const userWithSameEmail = await userRepository.findByEmail(email)
 
   if (userWithSameEmail) {
@@ -78,6 +112,7 @@ async function validateUniqueEmailOrFail(email: string) {
 
 export default {
   getUser,
+  updateUser,
   createUser,
   validateSignIn,
 }
