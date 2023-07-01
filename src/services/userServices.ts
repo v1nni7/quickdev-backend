@@ -2,12 +2,11 @@ import jwt from 'jsonwebtoken'
 import { hashSync, compareSync } from 'bcrypt'
 
 import { userRepository } from '@/repositories'
-import { conflictError } from '@/errors/conflictError'
-import { notFoundError } from '@/errors/notFoundError'
-import { unauthorizedError } from '@/errors/unauthorizedError'
+import { httpResponse } from '@/utils/httpResponse'
+
 import {
-  CreateUserParams,
   SignInParams,
+  CreateUserParams,
   UpdateUserParams,
 } from '@/interfaces/userInterfaces'
 
@@ -82,7 +81,7 @@ async function validatePasswordOrFail(
   const passwordMatch = compareSync(password, hashedPassword)
 
   if (!passwordMatch) {
-    throw unauthorizedError('Invalid email or password')
+    throw httpResponse('unauthorized', 'Invalid email or password')
   }
 }
 
@@ -90,7 +89,7 @@ async function getUserByEmailOrFail(email: string) {
   const user = await userRepository.findByEmail(email)
 
   if (!user) {
-    throw unauthorizedError('Invalid email or password')
+    throw httpResponse('unauthorized', 'Invalid email or password')
   }
 
   return user
@@ -100,7 +99,7 @@ async function validateUserExistsOrFail(id: string) {
   const user = await userRepository.findById(id)
 
   if (!user) {
-    throw notFoundError('User not found')
+    throw httpResponse('notFound', 'User not found')
   }
 
   return user
@@ -112,7 +111,7 @@ async function validateUniqueEmailOrFail(email: string) {
   const userWithSameEmail = await userRepository.findByEmail(email)
 
   if (userWithSameEmail) {
-    throw conflictError('Email already in use')
+    throw httpResponse('conflict', 'Email already in use')
   }
 }
 

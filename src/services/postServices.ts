@@ -1,7 +1,7 @@
 import { postRepository } from '@/repositories'
-import { notFoundError } from '@/errors/notFoundError'
-import { forbiddenError } from '@/errors/forbiddenError'
+
 import { CreatePostParams, UpdatePostParams } from '@/interfaces/postInterfaces'
+import { httpResponse } from '@/utils/httpResponse'
 
 async function createPost(data: CreatePostParams) {
   await postRepository.createPost(data)
@@ -33,7 +33,7 @@ async function deletePost(postId: string, userId: string) {
 
 function validateUserIsPostOwner(postUserId: string, userId: string) {
   if (postUserId !== userId) {
-    throw forbiddenError('You are not the owner of this post')
+    throw httpResponse('forbidden', 'You are not the owner of this post')
   }
 }
 
@@ -41,7 +41,7 @@ async function validatePostExistsOrFail(postId: string) {
   const post = await postRepository.findPostById(postId)
 
   if (!post) {
-    throw notFoundError('Post not found')
+    throw httpResponse('notFound', 'Post not found')
   }
 
   return post

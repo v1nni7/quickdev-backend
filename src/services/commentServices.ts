@@ -1,11 +1,11 @@
 import { commentRepository } from '@/repositories'
+
+import postServices from './postServices'
+import { httpResponse } from '@/utils/httpResponse'
 import {
   CreateCommentParams,
   UpdateCommentParams,
 } from '@/interfaces/commentInterface'
-import { notFoundError } from '@/errors/notFoundError'
-import { forbiddenError } from '@/errors/forbiddenError'
-import postServices from './postServices'
 
 async function createComment(data: CreateCommentParams) {
   await postServices.validatePostExistsOrFail(data.postId)
@@ -49,13 +49,16 @@ function validateUserIsPostOwnerOrCommentOwner(
   userId: string,
 ) {
   if (postOwnerId !== userId && commentOwnerId !== userId) {
-    throw forbiddenError('You are not the owner of this post or comment')
+    throw httpResponse(
+      'forbidden',
+      'You are not the owner of this post or comment',
+    )
   }
 }
 
 function validateUserIsCommentOwner(commentUserId: string, userId: string) {
   if (commentUserId !== userId) {
-    throw forbiddenError('You are not the owner of this comment')
+    throw httpResponse('forbidden', 'You are not the owner of this comment')
   }
 }
 
@@ -63,7 +66,7 @@ async function validateCommentExistsOrFail(commentId: string) {
   const comment = await commentRepository.findCommentById(commentId)
 
   if (!comment) {
-    throw notFoundError('Comment not found')
+    throw httpResponse('notFound', 'Comment not found')
   }
 
   return comment
