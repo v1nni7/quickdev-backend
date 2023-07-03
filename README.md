@@ -27,6 +27,24 @@ Backend desenvolvido para uma aplicação de rede social. A API foi construida u
   <summary>Json Web Token (JWT)</summary>
 </details>
 
+<details>
+  O Jest é uma estrutura de teste de código aberto amplamente utilizada devido à sua simplicidade, cobertura abrangente e velocidade de execução. É especialmente popular em projetos JavaScript, como aplicações React e Node.js.
+
+  <summary>Jest</summary>
+</details>
+
+<details>
+O PostgreSQL é um sistema de gerenciamento de banco de dados relacional de código aberto conhecido por sua confiabilidade, estabilidade e recursos avançados. Ele oferece uma ampla gama de funcionalidades, além de uma comunidade ativa e suporte abrangente.
+
+<summary>PostgreSQL</summary>
+</details>
+
+<details>
+O TypeScript é uma linguagem de programação desenvolvida pela Microsoft que adiciona tipagem estática opcional ao JavaScript. Com a tipagem estática, o TypeScript traz benefícios como detecção de erros em tempo de compilação e melhor autocompletar, além de integração com ferramentas e IDEs que melhoram o desenvolvimento do projeto.
+
+<summary>TypeScript</summary>
+</details>
+
 <br>
 
 Essas tecnologias foram escolhidas para o backend do QuickDev por suas características e benefícios específicos. Elas ajudam a construir uma aplicação escalável, segura e de alto desempenho, permitindo que os desenvolvedores se concentrem na lógica de negócios principal da plataforma.
