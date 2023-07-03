@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { CreatePostParams, UpdatePostParams } from '@/interfaces/postInterfaces'
+import { CreatePostParams, UpdatePostParams } from '@/interfaces'
 
 export const createPostSchema = Joi.object<CreatePostParams>({
   title: Joi.string().max(100).required(),

@@ -1,9 +1,5 @@
 import Joi from 'joi'
-import {
-  SignInParams,
-  CreateUserParams,
-  UpdateUserParams,
-} from '@/interfaces/userInterfaces'
+import { SignInParams, CreateUserParams, UpdateUserParams } from '@/interfaces'
 
 export const signUpSchema = Joi.object<CreateUserParams>({
   name: Joi.string().max(100).required(),
